@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:newnew/learn_bloc/learn_bloc.dart';
 import 'package:newnew/mini_project_bloc/mini_shopping_page_1.dart';
 import 'package:newnew/mini_project_bloc/mini_shopping_page_2.dart';
+import 'package:newnew/todo_bloc/todo_model.dart';
 import 'package:newnew/todo_bloc/todo_page.dart';
 import 'category_demo/category_screen.dart';
 import 'learn_bloc/demo_counter_screen.dart';
@@ -15,17 +16,20 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    return BlocProvider<TodoCubit>(
+      create: (_) => TodoCubit(),
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        debugShowCheckedModeBanner: false,
+        // home: CounterPage(),
+        // home: MiniShoppingPage1(),
+        home: TodoBloc(),
+        // home: MyHomePage(title: 'CouterCubit',),
+        // home: CategoryScreen(),
       ),
-      debugShowCheckedModeBanner: false,
-      // home: CounterPage(),
-      home: MiniShoppingPage1(),
-      // home: TodoBloc(),
-      // home: MyHomePage(title: 'CouterCubit',),
-      // home: CategoryScreen(),
     );
   }
 }

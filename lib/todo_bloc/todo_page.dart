@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:newnew/mini_project_bloc/shopping.dart';
 import 'package:newnew/todo_bloc/todo_model.dart';
 
 class TodoBloc extends StatefulWidget {
@@ -15,16 +14,28 @@ class _TodoBlocState extends State<TodoBloc> {
   late TodoModel itemSelectNow;
   late String todoInto = controller.text;
   final TodoCubit _todoCubit = TodoCubit();
+  bool _firstRuntime = true;
 
   @override
   void initState() {
     // TODO: implement initState
-    _todoCubit.createListTodo();
+    // _todoCubit.createListTodo();
     super.initState();
+  }
+
+  void myInitState(TodoCubit todoCubit) async {
+    // print('luu du lieu');
+    await todoCubit.getListTodoLocal();
+    print('xuat du lieu');
   }
 
   @override
   Widget build(BuildContext context) {
+    final listTodoCubit = BlocProvider.of<TodoCubit>(context);
+    if (_firstRuntime) {
+      _firstRuntime = false;
+      myInitState(listTodoCubit);
+    }
     return Scaffold(
       appBar: AppBar(
         title: Row(
@@ -33,8 +44,8 @@ class _TodoBlocState extends State<TodoBloc> {
             const Text('TodoList'),
             IconButton(
                 onPressed: () {
-                  _todoCubit.addTodo(todoInto.toString());
-                  print('$todoInto');
+                  listTodoCubit.addTodo(todoInto.toString());
+                  print(todoInto);
                 },
                 icon: const Icon(Icons.add)),
           ],
@@ -42,7 +53,7 @@ class _TodoBlocState extends State<TodoBloc> {
         actions: [
           IconButton(
             onPressed: () {
-              _todoCubit.removeTodo(itemSelectNow);
+              listTodoCubit.removeTodo(itemSelectNow);
               print('con chim');
             },
             icon: const Icon(Icons.remove),
@@ -50,7 +61,7 @@ class _TodoBlocState extends State<TodoBloc> {
         ],
       ),
       body: BlocBuilder<TodoCubit, TodoState>(
-        bloc: _todoCubit,
+        // bloc: _todoCubit,
         builder: (context, state) {
           return Column(
             children: [
@@ -58,7 +69,26 @@ class _TodoBlocState extends State<TodoBloc> {
                 controller: controller,
                 decoration: const InputDecoration(),
               ),
-              Expanded(child: buildListView()),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: listTodoCubit.listTodoModel.length,
+                  itemBuilder: (_, index) {
+                    final todo = listTodoCubit.listTodoModel[index];
+                    return GestureDetector(
+                      onTap: () {
+                        itemSelectNow = todo;
+                        listTodoCubit.setColor(itemSelectNow);
+                        print(itemSelectNow.name);
+                      },
+                      child: Column(
+                        children: [
+                          itemTodo(todo),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ),
             ],
           );
         },
@@ -66,46 +96,22 @@ class _TodoBlocState extends State<TodoBloc> {
     );
   }
 
-  Widget buildListView() {
-    return ListView.builder(
-      itemCount: _todoCubit.listTodoModel.length,
-      itemBuilder: (_, index) {
-        final todo = _todoCubit.listTodoModel[index];
-        return GestureDetector(
-          onTap: () {
-            itemSelectNow = todo;
-            _todoCubit.setColor(itemSelectNow);
-            print('${itemSelectNow.name}');
-          },
-          child: Column(
-            children: [
-              itemTodo(todo),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
   Widget itemTodo(TodoModel todoModel) {
     return Container(
       alignment: Alignment.topLeft,
-      margin: EdgeInsets.symmetric(horizontal: 30, vertical: 16),
-      padding: EdgeInsets.symmetric(horizontal: 30, vertical: 8),
+      margin: const EdgeInsets.symmetric(horizontal: 30, vertical: 16),
+      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 8),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
-        color: todoModel.colors ? Colors.green : Colors.yellow,
+        color: todoModel.colors! ? Colors.green : Colors.yellow,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(todoModel.name),
-          Text(todoModel.timeNow),
+          Text(todoModel.name!),
+          Text(todoModel.timeNow!),
         ],
       ),
     );
   }
-
-
-
 }

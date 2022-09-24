@@ -50,7 +50,7 @@ class _MiniShoppingPage1State extends State<MiniShoppingPage1> {
                           Text(
                             _shoppingCubit.countter().toString(),
                             style: const TextStyle(
-                                color: Colors.white, fontSize: 8),
+                                color: Colors.white, fontSize: 10),
                           ),
                         ],
                       );
@@ -123,7 +123,7 @@ class _MiniShoppingPage1State extends State<MiniShoppingPage1> {
                   }
                 },
                 child: itemShopping.setUp
-                    ? Icon(Icons.airline_stops_rounded)
+                    ? Icon(Icons.check)
                     : Text('Thêm'),
               );
             },

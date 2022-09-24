@@ -19,25 +19,12 @@ class ShoppingCubit extends Cubit<ShoppingState> {
   }
 
   List<ItemShopping> createListShopping() {
-    if (listModel.isNotEmpty) {
-      return listModel;
-    }
     for (int i = 0; i < itemNames.length; i++) {
-      listModel.add(
-        ItemShopping(i, itemNames[i],
-            Colors.primaries[Random().nextInt(Colors.primaries.length)], false),
-      );
+      listModel.add(ItemShopping(i, itemNames[i],
+          Colors.primaries[Random().nextInt(Colors.primaries.length)], false));
     }
     return listModel;
   }
-
-
-  // List<ItemShopping> createListName() {
-  //   for (int i = 0; i < itemNames.length; i++) {
-  //     listNameModel.add(itemNames[i]);
-  //   }
-  //   return listNameModel;
-  // }
 
   int countter() {
     int a = itemSelected.length;
@@ -54,7 +41,7 @@ class ShoppingCubit extends Cubit<ShoppingState> {
     for (var obj in listModel) {
       for (var obk in item) {
         if (obj.name == obk.name) {
-           obj.setUp = false;
+          obj.setUp = false;
         }
       }
     }
@@ -82,11 +69,6 @@ class ShoppingCubit extends Cubit<ShoppingState> {
     'Xôi',
     'Cơm',
   ];
-//
-// void additemNew() {
-//   itemNames.add()
-// }
-
 }
 
 class ShoppingState {}
