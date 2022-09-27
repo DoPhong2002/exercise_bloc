@@ -1,12 +1,103 @@
 import 'dart:convert';
 import 'dart:core';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class TodoCubit extends Cubit<TodoState> {
-  TodoCubit() : super(TodoInitState());
-  List<TodoModel> listTodoModel = [];
+class TodoProvider extends ChangeNotifier {
+  List<TodoModel> listTodoModels = [];
+  SharedPreferences? _preferences;
+
+  void setUp() {
+    notifyListeners();
+  }
+
+  addTodo(String todo) async {
+    listTodoModels.add(
+      TodoModel(
+        name: todo.toString(),
+        timeNow: DateTime
+            .now()
+            .millisecondsSinceEpoch,
+      ),
+    );
+    saveListTodoLocal();
+    notifyListeners();
+  }
+
+  removeTodo(TodoModel todoModel) {
+    listTodoModels.removeWhere((element) =>
+    element.timeNow == todoModel.timeNow);
+    saveListTodoLocal();
+    notifyListeners();
+  }
+
+  void saveListTodoLocal() async {
+    List<String> listTodoLocal = [];
+      // chuyen model ve map
+    Map<String, dynamic> todoJson = Map();
+    for (TodoModel todoModel in listTodoModels) {
+      todoJson['Name'] = todoModel.name;
+      todoJson['TimeNow'] = todoModel.timeNow;
+      //b2: chuyen Map thanh String
+      String listData = jsonEncode(todoJson);
+      listTodoLocal.add(listData);
+    }
+    //luu String duoi dang Ki
+    _preferences ??= await SharedPreferences.getInstance();
+    _preferences!.setStringList('dataTodo', listTodoLocal);
+    print('test length: ${listTodoLocal.length}');
+  }
+
+  ////***Lay du lieu tu local****
+void getListTodoLocal () async{
+  if(_preferences == null){
+    _preferences  =  await SharedPreferences.getInstance();
+  }
+  List<String>? listDataTodoLocal = _preferences!.getStringList('dataTodo');
+  //Tao vong lap
+  for(String todo in  listDataTodoLocal!){
+    // chuyen String ve Map
+    Map<String, dynamic> dataTodoLocalMap = jsonDecode(todo);
+    //chuyen Map ve Model
+    TodoModel todoModel = TodoModel();
+    todoModel.name = dataTodoLocalMap['Name'];
+    todoModel.timeNow = dataTodoLocalMap['TimeNow'];
+    listTodoModels.add(todoModel);
+  }
+  notifyListeners();
+}
+
+
+}
+
+class TodoModel {
+  String? name;
+  int? timeNow;
+
+  TodoModel({this.name, this.timeNow});
+}
+
+// const jsonTodo = [
+//   {
+//     "Name": "Cong viec 1",
+//     "TimeNow": 'con cu',
+//     "colors": true,
+//   },
+//   {
+//     "Name": "3",
+//     "TimeNow": "4",
+//     "colors": true,
+//   },
+//   {
+//     "Name": "5",
+//     "TimeNow": "6",
+//     "colors": true,
+//   },
+// ];
+
+/*
   SharedPreferences? sharedPreferences;
 
   Future createListTodo() async {
@@ -27,7 +118,7 @@ class TodoCubit extends Cubit<TodoState> {
     emit(TodoState());
   }
 
-  //******Luu du lieu  local*******
+  //Luu du lieu  local*******
   Future saveListTodo() async {
     List<String> listTodoDataString = [];
     for (TodoModel todoModel in listTodoModel) {
@@ -48,7 +139,7 @@ class TodoCubit extends Cubit<TodoState> {
     // emit(TodoGettingState());
   }
 
-  //******Lay  du lieu tu local*******
+  //Lay  du lieu tu local*******
   Future getListTodoLocal() async {
     if (sharedPreferences == null) {
       sharedPreferences = await SharedPreferences.getInstance();
@@ -57,12 +148,12 @@ class TodoCubit extends Cubit<TodoState> {
     if (dataListString != null) {
       for (String obj in dataListString) {
         // chuyen String ve Map
-        Map<String, dynamic>dataMap = jsonDecode(obj);
+        Map<String, dynamic> dataMap = jsonDecode(obj);
         // chuyen map ve Model
         TodoModel todoModel = TodoModel();
-        todoModel.name =dataMap['Name'];
-        todoModel.timeNow =dataMap['TimeNow'];
-        todoModel.colors =dataMap['colors'];
+        todoModel.name = dataMap['Name'];
+        todoModel.timeNow = dataMap['TimeNow'];
+        todoModel.colors = dataMap['colors'];
         listTodoModel.add(todoModel);
       }
       print('du lieu lay ra: ${listTodoModel.length}');
@@ -70,18 +161,7 @@ class TodoCubit extends Cubit<TodoState> {
     emit(TodoGetSuccessState());
   }
 
-  addTodo(String todo) async {
-    // phat tin hieu dang xu ly
-    emit(TodoGettingState());
-    await Future.delayed(Duration(seconds: 2));
-    listTodoModel.add(TodoModel(
-        name: todo.toString(),
-        timeNow: DateTime.now().toString(),
-        colors: true));
-    //phat tin hieu xu ly thanh cong
-    saveListTodo();
-    emit(TodoGettingState());
-  }
+
 
   void removeTodo(TodoModel todo) {
     listTodoModel.remove(todo);
@@ -89,47 +169,6 @@ class TodoCubit extends Cubit<TodoState> {
     emit(TodoGettingState());
   }
 
-  void setColor(TodoModel todo) {
-    // todo.colors = !todo.colors;
-    if(todo.colors == true){
-      todo.colors == false;
-    }else{
-      todo.colors == true;
-    }
-    emit(TodoGettingState());
-  }
-}
+ */
 
-class TodoState {}
 
-class TodoInitState extends TodoState {}
-
-class TodoGettingState extends TodoState {}
-
-class TodoGetSuccessState extends TodoState {}
-
-class TodoModel {
-  String? name;
-  String? timeNow;
-  bool? colors = true ;
-
-  TodoModel({ this.name,  this.timeNow,  this.colors});
-}
-
-const jsonTodo = [
-  {
-    "Name": "Cong viec 1",
-    "TimeNow": 'con cu',
-    "colors": true,
-  },
-  {
-    "Name": "3",
-    "TimeNow": "4",
-    "colors": true,
-  },
-  {
-    "Name": "5",
-    "TimeNow": "6",
-    "colors": true,
-  },
-];

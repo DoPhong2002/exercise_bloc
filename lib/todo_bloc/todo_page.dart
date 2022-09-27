@@ -1,21 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:newnew/todo_bloc/todo_model.dart';
+import 'package:provider/provider.dart';
 
-class TodoBloc extends StatefulWidget {
-  const TodoBloc({Key? key}) : super(key: key);
+class TodoPage extends StatefulWidget {
+  const TodoPage({Key? key}) : super(key: key);
 
   @override
-  State<TodoBloc> createState() => _TodoBlocState();
+  State<TodoPage> createState() => _TodoPageState();
 }
 
-class _TodoBlocState extends State<TodoBloc> {
-  final TextEditingController controller = TextEditingController();
-  late TodoModel itemSelectNow;
-  late String todoInto = controller.text;
-  final TodoCubit _todoCubit = TodoCubit();
+class _TodoPageState extends State<TodoPage> {
+  TodoModel? _todoModelSelected;
+  TextEditingController _controller = TextEditingController();
   bool _firstRuntime = true;
-
   @override
   void initState() {
     // TODO: implement initState
@@ -23,18 +21,26 @@ class _TodoBlocState extends State<TodoBloc> {
     super.initState();
   }
 
-  void myInitState(TodoCubit todoCubit) async {
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    _controller.dispose();
+    super.dispose();
+  }
+
+
+  void myInitState() async {
     // print('luu du lieu');
-    await todoCubit.getListTodoLocal();
+     context.read<TodoProvider>().getListTodoLocal();
     print('xuat du lieu');
   }
 
   @override
   Widget build(BuildContext context) {
-    final listTodoCubit = BlocProvider.of<TodoCubit>(context);
+
     if (_firstRuntime) {
       _firstRuntime = false;
-      myInitState(listTodoCubit);
+      myInitState();
     }
     return Scaffold(
       appBar: AppBar(
@@ -44,8 +50,8 @@ class _TodoBlocState extends State<TodoBloc> {
             const Text('TodoList'),
             IconButton(
                 onPressed: () {
-                  listTodoCubit.addTodo(todoInto.toString());
-                  print(todoInto);
+                  context.read<TodoProvider>().addTodo(_controller.text);
+                  _controller.text = '';
                 },
                 icon: const Icon(Icons.add)),
           ],
@@ -53,64 +59,72 @@ class _TodoBlocState extends State<TodoBloc> {
         actions: [
           IconButton(
             onPressed: () {
-              listTodoCubit.removeTodo(itemSelectNow);
-              print('con chim');
+              if (_todoModelSelected != null) {
+                context.read<TodoProvider>().removeTodo(_todoModelSelected!);
+              }
             },
             icon: const Icon(Icons.remove),
           ),
         ],
       ),
-      body: BlocBuilder<TodoCubit, TodoState>(
-        // bloc: _todoCubit,
-        builder: (context, state) {
-          return Column(
-            children: [
-              TextField(
-                controller: controller,
-                decoration: const InputDecoration(),
-              ),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: listTodoCubit.listTodoModel.length,
-                  itemBuilder: (_, index) {
-                    final todo = listTodoCubit.listTodoModel[index];
-                    return GestureDetector(
-                      onTap: () {
-                        itemSelectNow = todo;
-                        listTodoCubit.setColor(itemSelectNow);
-                        print(itemSelectNow.name);
-                      },
-                      child: Column(
-                        children: [
-                          itemTodo(todo),
-                        ],
-                      ),
+      body: Column(
+        children: [
+          TextFormField(
+            controller: _controller,
+            decoration: InputDecoration(hintText: 'Nhap todo zo day ....'),
+          ),
+          Expanded(
+            child: Consumer(
+              builder: (_, TodoProvider todoProvider, __) {
+                return ListView.separated(
+                  padding: EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                  itemCount: todoProvider.listTodoModels.length,
+                  separatorBuilder: (BuildContext, index) {
+                    return SizedBox(
+                      height: 12,
                     );
                   },
-                ),
-              ),
-            ],
-          );
-        },
+                  itemBuilder: (_, index) {
+                    return buildItem(
+                        todoProvider.listTodoModels[index], todoProvider);
+                  },
+                );
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
 
-  Widget itemTodo(TodoModel todoModel) {
-    return Container(
-      alignment: Alignment.topLeft,
-      margin: const EdgeInsets.symmetric(horizontal: 30, vertical: 16),
-      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 8),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        color: todoModel.colors! ? Colors.green : Colors.yellow,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(todoModel.name!),
-          Text(todoModel.timeNow!),
-        ],
+  Widget buildItem(TodoModel todoModel, TodoProvider todoProvider) {
+    return InkWell(
+      onTap: () {
+        print('1: $_todoModelSelected');
+        if (_todoModelSelected?.timeNow == todoModel.timeNow) {
+          _todoModelSelected = null;
+          print('2: $_todoModelSelected');
+        } else {
+          _todoModelSelected = todoModel;
+          print('3: $_todoModelSelected');
+        }
+        todoProvider.setUp();
+      },
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8),
+          color: todoModel.timeNow == _todoModelSelected?.timeNow
+              ? Colors.green
+              : Colors.blue,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('${todoModel.name}'),
+            Text('${todoModel.timeNow}'),
+          ],
+        ),
       ),
     );
   }
