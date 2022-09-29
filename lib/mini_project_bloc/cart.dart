@@ -1,7 +1,7 @@
 import 'dart:ui';
 
+import 'package:Flutter_father/mini_project_bloc/shopping.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:newnew/mini_project_bloc/shopping.dart';
 
 class CartCubit extends Cubit<CartState> {
   CartCubit() : super(CartInitState());

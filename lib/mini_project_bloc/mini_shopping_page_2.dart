@@ -1,7 +1,7 @@
+import 'package:Flutter_father/mini_project_bloc/cart.dart';
+import 'package:Flutter_father/mini_project_bloc/shopping.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:newnew/mini_project_bloc/cart.dart';
-import 'package:newnew/mini_project_bloc/shopping.dart';
 
 class MiniShoppingPage2 extends StatefulWidget {
   List<ItemShopping> listBuy = [];

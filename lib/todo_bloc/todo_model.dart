@@ -17,9 +17,7 @@ class TodoProvider extends ChangeNotifier {
     listTodoModels.add(
       TodoModel(
         name: todo.toString(),
-        timeNow: DateTime
-            .now()
-            .millisecondsSinceEpoch,
+        timeNow: DateTime.now().millisecondsSinceEpoch,
       ),
     );
     saveListTodoLocal();
@@ -27,15 +25,15 @@ class TodoProvider extends ChangeNotifier {
   }
 
   removeTodo(TodoModel todoModel) {
-    listTodoModels.removeWhere((element) =>
-    element.timeNow == todoModel.timeNow);
+    listTodoModels
+        .removeWhere((element) => element.timeNow == todoModel.timeNow);
     saveListTodoLocal();
     notifyListeners();
   }
 
   void saveListTodoLocal() async {
     List<String> listTodoLocal = [];
-      // chuyen model ve map
+    // chuyen model ve map
     Map<String, dynamic> todoJson = Map();
     for (TodoModel todoModel in listTodoModels) {
       todoJson['Name'] = todoModel.name;
@@ -51,25 +49,23 @@ class TodoProvider extends ChangeNotifier {
   }
 
   ////***Lay du lieu tu local****
-void getListTodoLocal () async{
-  if(_preferences == null){
-    _preferences  =  await SharedPreferences.getInstance();
+  void getListTodoLocal() async {
+    if (_preferences == null) {
+      _preferences = await SharedPreferences.getInstance();
+    }
+    List<String>? listDataTodoLocal = _preferences!.getStringList('dataTodo');
+    //Tao vong lap
+    for (String todo in listDataTodoLocal!) {
+      // chuyen String ve Map
+      Map<String, dynamic> dataTodoLocalMap = jsonDecode(todo);
+      //chuyen Map ve Model
+      TodoModel todoModel = TodoModel();
+      todoModel.name = dataTodoLocalMap['Name'];
+      todoModel.timeNow = dataTodoLocalMap['TimeNow'];
+      listTodoModels.add(todoModel);
+    }
+    notifyListeners();
   }
-  List<String>? listDataTodoLocal = _preferences!.getStringList('dataTodo');
-  //Tao vong lap
-  for(String todo in  listDataTodoLocal!){
-    // chuyen String ve Map
-    Map<String, dynamic> dataTodoLocalMap = jsonDecode(todo);
-    //chuyen Map ve Model
-    TodoModel todoModel = TodoModel();
-    todoModel.name = dataTodoLocalMap['Name'];
-    todoModel.timeNow = dataTodoLocalMap['TimeNow'];
-    listTodoModels.add(todoModel);
-  }
-  notifyListeners();
-}
-
-
 }
 
 class TodoModel {
@@ -170,5 +166,3 @@ class TodoModel {
   }
 
  */
-
-

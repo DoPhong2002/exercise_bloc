@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:newnew/learn_bloc/learn_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'learn_bloc.dart';
 
 class CounterPage extends StatefulWidget {
   const CounterPage({Key? key}) : super(key: key);
@@ -11,7 +12,7 @@ class CounterPage extends StatefulWidget {
 }
 
 class _CounterPageState extends State<CounterPage> {
-  final _counterCubit = CounterCubit();
+  final _counterCubit = fs();
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   late SharedPreferences prefs;
 
@@ -52,14 +53,14 @@ class _CounterPageState extends State<CounterPage> {
       appBar: AppBar(title: const Text('Counter')),
       body: Column(
         children: [
-          BlocListener<CounterCubit, int>(
+          BlocListener<fs, int>(
             bloc: _counterCubit,
             listener: (context, count) {
               if (count.runtimeType == int && count % 5 == 0) {
                 print('lucky number');
               }
             },
-            child: BlocBuilder<CounterCubit, int>(
+            child: BlocBuilder<fs, int>(
               builder: (context, count) => Center(child: Text('$count')),
               bloc: _counterCubit,
             ),
