@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../report/add_report_page.dart';
+
 class LeftMenuPage extends StatefulWidget {
   const LeftMenuPage({Key? key}) : super(key: key);
 
@@ -73,106 +75,109 @@ class _LeftMenuPageState extends State<LeftMenuPage> {
   }
 
   Widget buildListIcons(){
-    return Container(
-      child: Column(
-        children: [
-          InkWell(
-             onTap: (){},
-            child: Container(
-              height: 50,
-              child: Row(
-                children: const [
-                  Icon(Icons.menu, size: 32),
-                  SizedBox(width: 8,),
-                  Text('Sự cố', style: TextStyle(
-                    fontSize: 16
-                  ),)
-                ],
-              ),
+    return Column(
+      children: [
+        InkWell(
+           onTap: (){
+             Navigator.push(
+               context,
+               MaterialPageRoute(builder: (context) => const AddReportPage()),
+             );
+           },
+          child: SizedBox(
+            height: 50,
+            child: Row(
+              children: const [
+                Icon(Icons.menu, size: 32),
+                SizedBox(width: 8,),
+                Text('Report', style: TextStyle(
+                  fontSize: 16
+                ),)
+              ],
             ),
           ),
-          Container(height: 2,color: Colors.grey[300],),
-          InkWell(
-             onTap: (){},
-            child: Container(
-              height: 50,
-              child: Row(
-                children: const [
-                  Icon(Icons.report, size: 32),
-                  SizedBox(width: 8,),
-                  Text('Báo cáo', style: TextStyle(
-                    fontSize: 16
-                  ),)
-                ],
-              ),
+        ),
+        Container(height: 2,color: Colors.grey[300],),
+        InkWell(
+           onTap: (){},
+          child: SizedBox(
+            height: 50,
+            child: Row(
+              children: const [
+                Icon(Icons.report, size: 32),
+                SizedBox(width: 8,),
+                Text('Báo cáo', style: TextStyle(
+                  fontSize: 16
+                ),)
+              ],
             ),
           ),
-          Container(height: 2,color: Colors.grey[300],),
-          InkWell(
-             onTap: (){},
-            child: Container(
-              height: 50,
-              child: Row(
-                children: const [
-                  Icon(Icons.pan_tool_alt_sharp, size: 32),
-                  SizedBox(width: 8,),
-                  Text('Đổi mật khẩu', style: TextStyle(
-                    fontSize: 16
-                  ),)
-                ],
-              ),
+        ),
+        Container(height: 2,color: Colors.grey[300],),
+        InkWell(
+           onTap: (){},
+          child: SizedBox(
+            height: 50,
+            child: Row(
+              children: const [
+                Icon(Icons.pan_tool_alt_sharp, size: 32),
+                SizedBox(width: 8,),
+                Text('Đổi mật khẩu', style: TextStyle(
+                  fontSize: 16
+                ),)
+              ],
             ),
           ),
-          Container(height: 2,color: Colors.grey[300],),
-          InkWell(
-             onTap: (){},
-            child: Container(
-              height: 50,
-              child: Row(
-                children: const [
-                  Icon(Icons.rule_folder, size: 32),
-                  SizedBox(width: 8,),
-                  Text('Điều khoản', style: TextStyle(
-                    fontSize: 16
-                  ),)
-                ],
-              ),
+        ),
+        Container(height: 2,color: Colors.grey[300],),
+        InkWell(
+           onTap: (){},
+          child: SizedBox(
+            height: 50,
+            child: Row(
+              children: const [
+                Icon(Icons.rule_folder, size: 32),
+                SizedBox(width: 8,),
+                Text('Điều khoản', style: TextStyle(
+                  fontSize: 16
+                ),)
+              ],
             ),
           ),
-          Container(height: 2,color: Colors.grey[300],),
-          InkWell(
-             onTap: (){},
-            child: Container(
-              height: 50,
-              child: Row(
-                children: const [
-                  Icon(Icons.phone, size: 32),
-                  SizedBox(width: 8,),
-                  Text('Liên hệ', style: TextStyle(
-                    fontSize: 16
-                  ),)
-                ],
-              ),
+        ),
+        Container(height: 2,color: Colors.grey[300],),
+        InkWell(
+           onTap: (){},
+          child: SizedBox(
+            height: 50,
+            child: Row(
+              children: const [
+                Icon(Icons.phone, size: 32),
+                SizedBox(width: 8,),
+                Text('Liên hệ', style: TextStyle(
+                  fontSize: 16
+                ),)
+              ],
             ),
           ),
-          Container(height: 2,color: Colors.grey[300],),
-          InkWell(
-             onTap: (){},
-            child: Container(
-              height: 50,
-              child: Row(
-                children: const [
-                  Icon(Icons.logout, size: 32),
-                  SizedBox(width: 8,),
-                  Text('Đăng xuất', style: TextStyle(
-                    fontSize: 16
-                  ),)
-                ],
-              ),
+        ),
+        Container(height: 2,color: Colors.grey[300],),
+        InkWell(
+           onTap: (){},
+          child: SizedBox(
+            height: 50,
+            child: Row(
+              children: const [
+                Icon(Icons.logout, size: 32),
+                SizedBox(width: 8,),
+                Text('Đăng xuất', style: TextStyle(
+                  fontSize: 16
+                ),)
+              ],
             ),
-          )
-        ],
-      ),
+          ),
+        )
+      ],
     );
   }
 }

@@ -1,13 +1,13 @@
 import 'package:Flutter_father/big_exercise/login/login_page.dart';
 import 'package:Flutter_father/big_exercise/profile/profile_page.dart';
-import 'package:Flutter_father/big_exercise/newsfeed/newfeed_page.dart';
+import 'package:Flutter_father/big_exercise/newsfeed/report_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'leftMenu/left_menu_page.dart';
 import 'login/model_login.dart';
-import 'newsfeed/newfeed_model.dart';
-import 'report/report_page.dart';
+import 'newsfeed/report_model.dart';
+import 'report/add_report_page.dart';
 
 
 void main() {
@@ -19,14 +19,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<NewFeedCubit>(
-      create: (_) => NewFeedCubit(),
+    return BlocProvider<BigCubit>(
+      create: (_) => BigCubit(),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
         theme: ThemeData(
         ),
-        home: ReportPage(),
+        home: LoginPage(),
       ),
     );
   }

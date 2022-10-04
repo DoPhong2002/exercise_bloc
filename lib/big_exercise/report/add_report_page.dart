@@ -1,51 +1,48 @@
 import 'package:Flutter_father/MyTextField.dart';
 import 'package:Flutter_father/big_exercise/modun/Mybuttom.dart';
-import 'package:Flutter_father/big_exercise/newsfeed/newfeed_model.dart';
+import 'package:Flutter_father/big_exercise/newsfeed/report_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../newsfeed/newfeed_page.dart';
+import '../newsfeed/report_page.dart';
 
-class ReportPage extends StatefulWidget {
-  const ReportPage({Key? key}) : super(key: key);
+class AddReportPage extends StatefulWidget {
+  const AddReportPage({Key? key}) : super(key: key);
 
   @override
-  State<ReportPage> createState() => _ReportPageState();
+  State<AddReportPage> createState() => _AddReportPageState();
 }
 
-class _ReportPageState extends State<ReportPage> {
+class _AddReportPageState extends State<AddReportPage> {
   // final NewFeedCubit _newFeedCubit = NewFeedCubit();
   List? itemListSelected = [];
   String selectImage = '';
-  TextEditingController _controllerTitle = TextEditingController();
-  TextEditingController _controllerContent = TextEditingController();
+  final TextEditingController _controllerTitle = TextEditingController();
+  final TextEditingController _controllerContent = TextEditingController();
   bool stateInit = true;
 
-  void myInitState(NewFeedCubit newFeedCubit) {
+  void myInitState(BigCubit newFeedCubit) {
     newFeedCubit.createListImage();
   }
 
   @override
   Widget build(BuildContext context) {
-    final cubitProvider = BlocProvider.of<NewFeedCubit>(context);
+    final cubitProvider = BlocProvider.of<BigCubit>(context);
     if (stateInit) {
       stateInit = false;
       myInitState(cubitProvider);
-      cubitProvider.createListImage();
+      print('lần 1');
     }
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Report'),
+        title: const Text('ADD Report'),
         actions: [
-          InkWell(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const NewFeedPage()),
-              );
-            },
-            child: const Icon(Icons.account_box),
-          )
+          IconButton(onPressed: (){
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const ReportPage()),
+            );
+          }, icon: const Icon(Icons.report))
         ],
       ),
       body: SingleChildScrollView(
@@ -56,7 +53,7 @@ class _ReportPageState extends State<ReportPage> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  buildTitleReport(),
+                  buildTitleAddReport(),
                   const SizedBox(
                     height: 16,
                   ),
@@ -81,7 +78,7 @@ class _ReportPageState extends State<ReportPage> {
   }
 
   Widget buildOntapAdd() {
-    final cubitProvider = BlocProvider.of<NewFeedCubit>(context);
+    final cubitProvider = BlocProvider.of<BigCubit>(context);
     return MyButton(
       textButtom: 'Them',
       colorButton: Colors.cyanAccent,
@@ -103,7 +100,7 @@ class _ReportPageState extends State<ReportPage> {
     );
   }
 
-  Widget buildTitleReport() {
+  Widget buildTitleAddReport() {
     return Column(
       children: [
         Column(
@@ -133,7 +130,7 @@ class _ReportPageState extends State<ReportPage> {
   }
 
   Widget buildGridViewImage() {
-    final cubitProvider = BlocProvider.of<NewFeedCubit>(context);
+    final cubitProvider = BlocProvider.of<BigCubit>(context);
     return GridView.builder(
       shrinkWrap: true,
       itemCount: cubitProvider.listImage.length,
@@ -149,7 +146,7 @@ class _ReportPageState extends State<ReportPage> {
   }
 
   Widget imageAdd(int index) {
-    final cubitProvider = BlocProvider.of<NewFeedCubit>(context);
+    final cubitProvider = BlocProvider.of<BigCubit>(context);
     return InkWell(
       onTap: () {
         print('con');

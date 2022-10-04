@@ -1,33 +1,33 @@
-import 'package:Flutter_father/big_exercise/newsfeed/newfeed_model.dart';
+import 'package:Flutter_father/big_exercise/newsfeed/report_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class NewFeedPage extends StatefulWidget {
-  const NewFeedPage({Key? key}) : super(key: key);
+class ReportPage extends StatefulWidget {
+  const ReportPage({Key? key}) : super(key: key);
 
   @override
-  State<NewFeedPage> createState() => _NewFeedPageState();
+  State<ReportPage> createState() => _ReportPageState();
 }
 
-class _NewFeedPageState extends State<NewFeedPage> {
+class _ReportPageState extends State<ReportPage> {
   @override
   Widget build(BuildContext context) {
-    final cubitProvider = BlocProvider.of<NewFeedCubit>(context);
+    final cubitProvider = BlocProvider.of<BigCubit>(context);
     print('so luong pt mh 2: ${cubitProvider.listNewFeed}');
 
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Sự cố'),
+          title: const Text('Report'),
         ),
         body: listViewNewFeed());
   }
 
   Widget listViewNewFeed() {
-    final cubit = BlocProvider.of<NewFeedCubit>(context);
+    final cubit = BlocProvider.of<BigCubit>(context);
     if (cubit.listNewFeed.isNotEmpty) {
       return ListView.separated(
         itemBuilder: (context, index) {
-          return BuildNewFeed(
+          return BuildReport(
             newFeedModel: cubit.listNewFeed[index],
           );
         },
@@ -43,18 +43,18 @@ class _NewFeedPageState extends State<NewFeedPage> {
   }
 }
 
-class BuildNewFeed extends StatelessWidget {
-  final NewFeedModel newFeedModel;
+class BuildReport extends StatelessWidget {
+  final ReportModel newFeedModel;
   String datetime = DateTime.now().toString();
 
-   BuildNewFeed({Key? key, required this.newFeedModel}) : super(key: key);
+  BuildReport({Key? key, required this.newFeedModel}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return buildItemNewFeed();
+    return buildItemReport();
   }
 
-  Widget buildItemNewFeed() {
+  Widget buildItemReport() {
     return Container(
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
@@ -63,11 +63,12 @@ class BuildNewFeed extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [buildTitleNewFeed(), buildStatus(), buildImage()],
+        children: [buildTitleReport(), buildStatusReport(), buildImage()],
       ),
     );
   }
-  Widget buildTitleNewFeed() {
+
+  Widget buildTitleReport() {
     return Column(
       children: [
         Row(
@@ -91,8 +92,8 @@ class BuildNewFeed extends StatelessWidget {
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children:  [
-                    Text('Đỗ Hồng Phong'),
+                  children: [
+                    const Text('Đỗ Hồng Phong'),
                     Text(datetime),
                   ],
                 ),
@@ -108,16 +109,19 @@ class BuildNewFeed extends StatelessWidget {
     );
   }
 
-  Widget buildStatus() {
+  Widget buildStatusReport() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Text(
-          '${newFeedModel.textTitleNewFeed}',
+          '${newFeedModel.textTitleReport}',
           style: const TextStyle(fontWeight: FontWeight.bold),
         ),
-        Text('${newFeedModel.textContentNewFeed}'),
+        Text('${newFeedModel.textContentReport}'),
+        const SizedBox(
+          height: 8,
+        )
       ],
     );
   }
@@ -172,7 +176,7 @@ class BuildNewFeed extends StatelessWidget {
         ],
       );
     } else if (cuontView() == 0) {
-      return SizedBox();
+      return Container();
     }
     return GridView.builder(
       physics: const NeverScrollableScrollPhysics(),

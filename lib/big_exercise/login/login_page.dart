@@ -1,6 +1,9 @@
+import 'package:Flutter_father/Archive/navigator.dart';
 import 'package:Flutter_father/MyTextField.dart';
 import 'package:Flutter_father/big_exercise/modun/Mybuttom.dart';
 import 'package:flutter/material.dart';
+
+import '../leftMenu/left_menu_page.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -49,7 +52,7 @@ class LoginPage extends StatelessWidget {
                             },
                           ),
                         ),
-                        SizedBox(width: 30,),
+                        const SizedBox(width: 30,),
                         Expanded(
                           child: MyButton(
                             textButtom: 'Đăng nhập',
@@ -57,6 +60,7 @@ class LoginPage extends StatelessWidget {
                             colorTextButton: Colors.white,
                             onTapButtom: () {
                               print('login');
+                              navigatorPushAndRemoveUntil(context, const LeftMenuPage());
                             },
                           ),
                         ),
@@ -65,24 +69,22 @@ class LoginPage extends StatelessWidget {
                   ],
                 ),
               ),
-              Container(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    Text(
-                      'HotLine: ',
-                      style: TextStyle(
-                          color: Colors.black, fontWeight: FontWeight.w500, fontSize: 14),
-                    ),
-                    Text(
-                      '1800.1186',
-                      style: TextStyle(color: Colors.cyanAccent),
-                    ),
-                    SizedBox(
-                      height: 80,
-                    )
-                  ],
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  Text(
+                    'HotLine: ',
+                    style: TextStyle(
+                        color: Colors.black, fontWeight: FontWeight.w500, fontSize: 14),
+                  ),
+                  Text(
+                    '1800.1186',
+                    style: TextStyle(color: Colors.cyanAccent),
+                  ),
+                  SizedBox(
+                    height: 80,
+                  )
+                ],
               ),
             ],
           ),
