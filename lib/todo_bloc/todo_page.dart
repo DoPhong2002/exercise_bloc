@@ -14,6 +14,7 @@ class _TodoPageState extends State<TodoPage> {
   TodoModel? _todoModelSelected;
   TextEditingController _controller = TextEditingController();
   bool _firstRuntime = true;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -28,16 +29,14 @@ class _TodoPageState extends State<TodoPage> {
     super.dispose();
   }
 
-
   void myInitState() async {
     // print('luu du lieu');
-     context.read<TodoProvider>().getListTodoLocal();
+    context.read<TodoProvider>().getListTodoLocal();
     print('xuat du lieu');
   }
 
   @override
   Widget build(BuildContext context) {
-
     if (_firstRuntime) {
       _firstRuntime = false;
       myInitState();
@@ -77,10 +76,10 @@ class _TodoPageState extends State<TodoPage> {
             child: Consumer(
               builder: (_, TodoProvider todoProvider, __) {
                 return ListView.separated(
-                  padding: EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
                   itemCount: todoProvider.listTodoModels.length,
                   separatorBuilder: (BuildContext, index) {
-                    return SizedBox(
+                    return const SizedBox(
                       height: 12,
                     );
                   },
@@ -111,7 +110,7 @@ class _TodoPageState extends State<TodoPage> {
         todoProvider.setUp();
       },
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
           color: todoModel.timeNow == _todoModelSelected?.timeNow

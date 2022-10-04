@@ -35,7 +35,11 @@ class _AppCountState extends State<AppCount> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: pages[currentIndex],
+      // body: pages[currentIndex],
+      body: IndexedStack(
+        children: pages,
+        index: currentIndex,
+      ),
       bottomNavigationBar: BottomNavigationBar(
         items: items,
         currentIndex: currentIndex,

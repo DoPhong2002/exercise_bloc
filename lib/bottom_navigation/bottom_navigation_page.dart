@@ -1,51 +1,32 @@
+import 'package:Flutter_father/BottomNavigationBar_exercise/app.dart';
+import 'package:Flutter_father/BottomNavigationBar_exercise/bottom_model.dart';
+import 'package:Flutter_father/BottomNavigationBar_exercise/cart_page.dart';
+import 'package:Flutter_father/BottomNavigationBar_exercise/product_page.dart';
 import 'package:Flutter_father/mini_project_bloc/mini_shopping_page_1.dart';
 import 'package:Flutter_father/todo_bloc/todo_page.dart';
 import 'package:flutter/material.dart';
 
-class CountPage extends StatefulWidget {
-  const CountPage({Key? key}) : super(key: key);
+class LearnBottomNavigationBar extends StatefulWidget {
+  const LearnBottomNavigationBar({Key? key}) : super(key: key);
 
   @override
-  State<CountPage> createState() => _CountPageState();
+  State<LearnBottomNavigationBar> createState() =>
+      _LearnBottomNavigationBarState();
 }
 
-class _CountPageState extends State<CountPage> {
-  final items = <BottomNavigationBarItem>[];
-  final pages = <Widget>[];
+class _LearnBottomNavigationBarState extends State<LearnBottomNavigationBar> with SingleTickerProviderStateMixin{
   int currentIndex = 0;
-
+  late TabController controller;
+  final pages = <Widget>[];
   @override
   void initState() {
-    items.addAll([
-      BottomNavigationBarItem(
-        icon: Image.asset('assets/icons/tab_account.png'),
-        activeIcon: Image.asset('assets/icons/tab_account_on.png'),
-        label: 'Home',
-      ),
-      BottomNavigationBarItem(
-        icon: Image.asset('assets/icons/tab_history.png'),
-        activeIcon: Image.asset('assets/icons/tab_history_on.png'),
-        label: 'Home',
-      ),
-      BottomNavigationBarItem(
-        icon: Image.asset('assets/icons/tab_home.png'),
-        activeIcon: Image.asset('assets/icons/tab_home_on.png'),
-        label: 'Home',
-      ),
-      BottomNavigationBarItem(
-        icon: Image.asset('assets/icons/tab_notify.png'),
-        activeIcon: Image.asset('assets/icons/tab_notify_on.png'),
-        label: 'Home',
-      ),
-      BottomNavigationBarItem(
-        icon: Image.asset('assets/icons/tab_home.png'),
-        activeIcon: Image.asset('assets/icons/tab_home_on.png'),
-        label: 'Home',
-      )
-    ]);
     pages.addAll([
-      const MiniShoppingPage1(),
-      const TodoPage(),
+      Container(
+        color: Colors.white,
+      ),
+      Container(
+        color: Colors.grey,
+      ),
       Container(
         color: Colors.blue,
       ),
@@ -55,33 +36,85 @@ class _CountPageState extends State<CountPage> {
       Container(
         color: Colors.green,
       ),
-      Container(
-        color: Colors.red,
-      ),
+
     ]);
-    super.initState();
+    controller  = TabController(length: getItems().length, vsync: this);
+    controller.addListener(onChange);
+     super.initState();
+  }
+  @override
+  void dispose() {
+    controller.removeListener(onChange);
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: IndexedStack(
-        index: currentIndex,
-        children: pages,
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: items,
-        currentIndex: currentIndex,
-        onTap: (index) {
-          setState(
-            () {
-              currentIndex = index;
-            },
-          );
-        },
-        selectedLabelStyle: const TextStyle(color: Colors.green),
-        type: BottomNavigationBarType.fixed,
-      ),
+      body: pages[currentIndex],
+      // body: IndexedStack(
+      //   index: currentIndex,
+      //   children: pages,
+      // ),
+      // body: TabBarView(
+      //   controller: controller,
+      //   children: pages,
+      // ),
+      bottomNavigationBar: bottomNavigationBar(),
     );
+  }
+
+  Widget bottomNavigationBar() {
+    return BottomNavigationBar(
+      items: getItems(),
+      currentIndex: currentIndex,
+      type: BottomNavigationBarType.fixed,
+      selectedItemColor: Theme.of(context).primaryColor,
+      showUnselectedLabels: false,
+      showSelectedLabels: false,
+      onTap: (index) {
+        setState(() {
+          currentIndex = index;
+          controller.animateTo(index);
+        });
+      },
+    );
+  }
+
+
+
+  List<BottomNavigationBarItem> getItems() {
+    return [
+      BottomNavigationBarItem(
+        icon: Image.asset('assets/icons/tab_account.png'),
+        activeIcon: Image.asset('assets/icons/tab_account_on.png'),
+        label: 'Account',
+      ),
+      BottomNavigationBarItem(
+        icon: Image.asset('assets/icons/tab_history.png'),
+        activeIcon: Image.asset('assets/icons/tab_history_on.png'),
+        label: 'Car',
+      ),
+      BottomNavigationBarItem(
+        icon: Image.asset('assets/icons/tab_home.png'),
+        activeIcon: Image.asset('assets/icons/tab_home_on.png'),
+        label: 'Home',
+      ),
+      BottomNavigationBarItem(
+        icon: Image.asset('assets/icons/tab_notify.png'),
+        activeIcon: Image.asset('assets/icons/tab_notify_on.png'),
+        label: 'Notification',
+      ),
+      BottomNavigationBarItem(
+        icon: Image.asset('assets/icons/tab_home.png'),
+        activeIcon: Image.asset('assets/icons/tab_home_on.png'),
+        label: 'Home 2',
+      )
+    ];
+  }
+  void onChange( ){
+    setState(() {
+      currentIndex = controller.index;
+    });
   }
 }

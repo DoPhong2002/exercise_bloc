@@ -17,16 +17,17 @@ class _CartPageState extends State<CartPage> {
 
     return Scaffold(
       body: Center(
-          child: Center(
-        child: Container(
-          height: 60,
-          width: 60,
-          child: Text(
-            '${countCubit.count}',
-            style: TextStyle(fontSize: 40),
+        child: Center(
+          child: Container(
+            height: 60,
+            width: 60,
+            child: Text(
+              '${countCubit.count}',
+              style: TextStyle(fontSize: 40),
+            ),
           ),
         ),
-      )),
+      ),
     );
   }
 }

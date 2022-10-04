@@ -54,4 +54,8 @@ class _ProductPageState extends State<ProductPage> {
       ),
     );
   }
+  Widget ccc(){
+    final countCubit = BlocProvider.of<CountCubit>(context);
+    return Container();
+  }
 }

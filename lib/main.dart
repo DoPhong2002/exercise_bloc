@@ -12,7 +12,7 @@ void main() {
       debugShowCheckedModeBanner: false,
       home: ChangeNotifierProvider(
         create: (_) => TodoProvider(),
-        child: TabBarPage(),
+        child: LearnBottomNavigationBar(),
       ),
     ),
   );
