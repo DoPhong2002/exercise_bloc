@@ -1,6 +1,4 @@
 import 'package:Flutter_father/BottomNavigationBar_exercise/bottom_model.dart';
-import 'package:Flutter_father/learn_bloc/learn_bloc.dart';
-import 'package:Flutter_father/learn_bloc/learn_bloc2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
