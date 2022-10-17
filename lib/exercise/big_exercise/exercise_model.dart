@@ -14,10 +14,6 @@ class LoginCubit extends Cubit<LoginState> {
       );
     }
   }
-
-  void addImaged(){
-
-  }
 }
 
 class LoginState {
