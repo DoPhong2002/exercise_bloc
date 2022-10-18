@@ -146,19 +146,9 @@ class _ProfileState extends State<Profile> {
             fit: BoxFit.cover,
           );
         }
-        return ClipRRect(
-          borderRadius: BorderRadius.circular(40),
-          child: Container(
-            width: 80,
-            height: 80,
-            decoration: const BoxDecoration(
-              color: Colors.red,
-            ),
-            child: Image.asset(
-              'assets/icons/dog2.jpeg',
-              fit: BoxFit.cover,
-            ),
-          ),
+        return Image.network(
+          'https://img.thuthuatphanmem.vn/uploads/2018/09/22/hinh-avatar-den-dep_015640377.jpg',
+          fit: BoxFit.cover,
         );
       },
     );

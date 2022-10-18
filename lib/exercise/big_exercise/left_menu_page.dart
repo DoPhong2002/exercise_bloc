@@ -15,8 +15,6 @@ class LeftMenuPage extends StatefulWidget {
 }
 
 class _LeftMenuPageState extends State<LeftMenuPage> {
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,31 +53,16 @@ class _LeftMenuPageState extends State<LeftMenuPage> {
           bottom: 24,
           child: Row(
             children: [
-              StreamBuilder<String>(
-                stream: exBloc.exStream,
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return Image.network(exBloc.url,
-                      height: 200,
-                      width: double.infinity,
-                      fit: BoxFit.cover,
-                    );
-                  }
-                  return ClipRRect(
-                    borderRadius: BorderRadius.circular(40),
-                    child: Container(
-                      width: 80,
-                      height: 80,
-                      decoration: const BoxDecoration(
-                        color: Colors.red,
-                      ),
-                      child: Image.asset(
-                        'assets/icons/dog2.jpeg',
-                        fit: BoxFit.cover,
-                      ),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(40),
+                child: Container(
+                    width: 80,
+                    height: 80,
+                    decoration: const BoxDecoration(
+                      color: Colors.red,
                     ),
-                  );
-                },
+                    child: buildImageAvt()
+                ),
               ),
               const SizedBox(
                 width: 20,
@@ -96,6 +79,23 @@ class _LeftMenuPageState extends State<LeftMenuPage> {
           ),
         )
       ],
+    );
+  }
+
+  Widget buildImageAvt() {
+    return StreamBuilder<String>(
+      stream: exBloc.exStream,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return Image.network(exBloc.url,
+            fit: BoxFit.cover,
+          );
+        }
+        return Image.network(
+          'https://img.thuthuatphanmem.vn/uploads/2018/09/22/hinh-avatar-den-dep_015640377.jpg',
+          fit: BoxFit.cover,
+        );
+      },
     );
   }
 
