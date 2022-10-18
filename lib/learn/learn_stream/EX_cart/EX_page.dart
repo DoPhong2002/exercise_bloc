@@ -1,4 +1,6 @@
 import 'package:Flutter_father/learn/learn_stream/EX_cart/EX_bloc.dart';
+import 'package:Flutter_father/learn/learn_stream/EX_cart/EX_page2.dart';
+import 'package:Flutter_father/modun/navigator.dart';
 import 'package:flutter/material.dart';
 
 class CartPage extends StatefulWidget {
@@ -9,21 +11,32 @@ class CartPage extends StatefulWidget {
 }
 
 class _CartPageState extends State<CartPage> {
-   List<String> a = [];
-   late int b =  1;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('CartPage'),
-        actions: [IconButton(onPressed: () {
-          cart.addProduct(TestModel('',a ,b));
-        }, icon: const Icon(Icons.add))],
+        actions: [
+          IconButton(
+            onPressed: () {
+              navigatorPush(context, const EXPage2());
+            },
+            icon: const Icon(Icons.home),
+          ),
+          IconButton(
+            onPressed: () {
+              cart.addProduct('products');
+            },
+            icon: const Icon(Icons.add),
+          )
+        ],
       ),
-      body: StreamBuilder<TestModel>(
+      body: StreamBuilder<List<String>>(
           stream: cart.stream,
           builder: (context, snapshot) {
-            return Center(child:Text('${snapshot.data?.listString.length ?? 0}'));
+            return Center(
+              child: Text('${cart.products.length ?? 0}'),
+            );
           }),
     );
   }

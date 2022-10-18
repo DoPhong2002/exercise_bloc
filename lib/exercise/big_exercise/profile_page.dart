@@ -59,10 +59,13 @@ class _ProfileState extends State<Profile> {
               height: 32,
             ),
             MyButton(
-                text: 'Lưu',
-                backgroundColor: Colors.cyanAccent,
-                textColor: Colors.white,
-                onTap: () {})
+              text: 'Lưu',
+              backgroundColor: Colors.cyanAccent,
+              textColor: Colors.white,
+              onTap: () {
+                print('check ton tai: ${exBloc.url}');
+              },
+            )
           ],
         ),
       ),
@@ -124,7 +127,7 @@ class _ProfileState extends State<Profile> {
       print('$baseUrl${value.path}');
       setState(() {
         url = '$baseUrl${value.path}';
-        bloc.getUrl(url);
+        exBloc.getUrl(url);
       });
     }).catchError((e) {
       ToastOverlay(context).show(message: e, type: ToastType.error);
@@ -133,24 +136,30 @@ class _ProfileState extends State<Profile> {
 
   Widget imageAVT() {
     return StreamBuilder<String>(
-      stream: bloc.EXstream,
+      stream: exBloc.exStream,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          return ClipRRect(
-            borderRadius: BorderRadius.circular(50),
-            child: Container(
-              width: 100,
-              height: 100,
-              decoration: const BoxDecoration(
-                color: Colors.red,
-              ),
-              child: Image.network(bloc.url, fit: BoxFit.cover,),
-            ),
+          return Image.network(
+            exBloc.url,
+            height: 200,
+            width: double.infinity,
+            fit: BoxFit.cover,
           );
-          // print('urlImage : ${bloc.url}');
-
         }
-        return Container(color: Colors.yellow,);
+        return ClipRRect(
+          borderRadius: BorderRadius.circular(40),
+          child: Container(
+            width: 80,
+            height: 80,
+            decoration: const BoxDecoration(
+              color: Colors.red,
+            ),
+            child: Image.asset(
+              'assets/icons/dog2.jpeg',
+              fit: BoxFit.cover,
+            ),
+          ),
+        );
       },
     );
   }

@@ -15,13 +15,7 @@ class LeftMenuPage extends StatefulWidget {
 }
 
 class _LeftMenuPageState extends State<LeftMenuPage> {
-  late EXBloc bloc;
 
-  @override
-  void initState() {
-    bloc = EXBloc();
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,10 +56,10 @@ class _LeftMenuPageState extends State<LeftMenuPage> {
           child: Row(
             children: [
               StreamBuilder<String>(
-                stream: bloc.EXstream,
+                stream: exBloc.exStream,
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
-                    return Image.network(bloc.url,
+                    return Image.network(exBloc.url,
                       height: 200,
                       width: double.infinity,
                       fit: BoxFit.cover,
@@ -136,7 +130,9 @@ class _LeftMenuPageState extends State<LeftMenuPage> {
           color: Colors.grey[300],
         ),
         InkWell(
-          onTap: () {},
+          onTap: () {
+            print('chuyen du lieu thanh cong: ${exBloc.url}');
+          },
           child: SizedBox(
             height: 50,
             child: Row(

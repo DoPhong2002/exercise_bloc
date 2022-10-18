@@ -1,10 +1,15 @@
 import 'dart:async';
 
 class EXBloc {
+
+  static final _exBloc = EXBloc._internal();
+  factory EXBloc()=> _exBloc;
+  EXBloc._internal();
+
   ///Them broadcast()  để có thể nhiều thằng có thể Stream được nó!
   final _EXStreamController = StreamController<String>.broadcast();
 
-  Stream<String> get EXstream => _EXStreamController.stream;
+  Stream<String> get exStream => _EXStreamController.stream;
 
   String url = '';
 
@@ -14,3 +19,4 @@ class EXBloc {
     _EXStreamController.add(url);
   }
 }
+final exBloc = EXBloc();

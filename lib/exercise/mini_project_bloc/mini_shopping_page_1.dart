@@ -1,4 +1,5 @@
 import 'package:Flutter_father/exercise/mini_project_bloc/shopping.dart';
+import 'package:Flutter_father/learn/learn_stream/bloc/issue_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'mini_shopping_page_2.dart';
@@ -12,6 +13,7 @@ class MiniShoppingPage1 extends StatefulWidget {
 
 class _MiniShoppingPage1State extends State<MiniShoppingPage1> {
   final ShoppingCubit _shoppingCubit = ShoppingCubit();
+
 
   @override
   void initState() {
@@ -64,17 +66,19 @@ class _MiniShoppingPage1State extends State<MiniShoppingPage1> {
     );
   }
 
-  Widget buildBloc(){
+
+
+  Widget buildBloc() {
     return BlocBuilder<ShoppingCubit, ShoppingState>(
       bloc: _shoppingCubit,
-      builder: (BuildContext, state) {
+      builder: (context, state) {
         return IconButton(
           onPressed: () async {
             final listLeak = await Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => MiniShoppingPage2(
-                    listBuy: _shoppingCubit.itemSelected),
+                builder: (context) =>
+                    MiniShoppingPage2(listBuy: _shoppingCubit.itemSelected),
               ),
             );
             print('truoc khi: ${_shoppingCubit.itemSelected.length}');
@@ -120,9 +124,7 @@ class _MiniShoppingPage1State extends State<MiniShoppingPage1> {
                     _shoppingCubit.itemSelected.add(itemShopping);
                   }
                 },
-                child: itemShopping.setUp
-                    ? Icon(Icons.check)
-                    : Text('Thêm'),
+                child: itemShopping.setUp ? Icon(Icons.check) : Text('Thêm'),
               );
             },
           ),

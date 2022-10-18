@@ -1,11 +1,9 @@
 import 'package:Flutter_father/MyTextField.dart';
-import 'package:Flutter_father/exercise/big_exercise/add_report/add_report_page.dart';
 import 'package:Flutter_father/exercise/big_exercise/left_menu_page.dart';
-import 'package:Flutter_father/exercise/big_exercise/profile_page.dart';
 import 'package:Flutter_father/exercise/big_exercise/register_page.dart';
 import 'package:Flutter_father/exercise/big_exercise/report_model.dart';
 import 'package:Flutter_father/learn/learn_save_data/hive/hive_manager.dart';
-import 'package:Flutter_father/learn/learn_secure_storage/flutter_secure_storage.dart';
+import 'package:Flutter_father/learn/learn_save_data/secure_storage/flutter_secure_storage.dart';
 import 'package:Flutter_father/modun/progress_dialog.dart';
 import 'package:Flutter_father/modun/service/api_service.dart';
 import 'package:Flutter_father/modun/service/user_service.dart';
@@ -13,7 +11,6 @@ import 'package:Flutter_father/modun/shared_preferences_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
-import 'package:provider/provider.dart';
 
 import '../../modun/Mybuttom.dart';
 import '../../modun/navigator.dart';
@@ -160,21 +157,21 @@ class _LoginPageState extends State<LoginPage> {
 
   void buildLogin() async {
     progress.show();
-    await Future.delayed(Duration(seconds: 3));
+    await Future.delayed(const Duration(seconds: 3));
     apiService
         .login(phone: phoneController.text, password: passwordController.text)
         .then((user) {
-          // sharedPrefs.setString(phoneKey, phoneController.text);
-          secureStorage.setString(phoneKey, phoneController.text);
-          // hive.setValue(userTokeKey, user.token);
-          hive.setValue(userKey, user);
+      // sharedPrefs.setString(phoneKey, phoneController.text);
+      secureStorage.setString(phoneKey, phoneController.text);
+      // hive.setValue(userTokeKey, user.token);
+      hive.setValue(userKey, user);
 
       progress.hide();
 
       ToastOverlay(context)
           .show(message: 'Hello ${user.name}', type: ToastType.error);
       apiService.token = user.token ?? '';
-      navigatorPushAndRemoveUntil(context, LeftMenuPage());
+      navigatorPushAndRemoveUntil(context, const LeftMenuPage());
     }).catchError((e) {
       progress.hide();
       ToastOverlay(context).show(message: e.toString(), type: ToastType.error);

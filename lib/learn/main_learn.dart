@@ -1,3 +1,4 @@
+import 'package:Flutter_father/modun/splash_page.dart';
 import 'package:flutter/material.dart';
 
 import 'image_picker_demo/image_picker_page.dart';
@@ -8,7 +9,7 @@ void main() {
   runApp(
     const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: IssuePage(),
+      home: SplashPage(),
       ),
   );
 }

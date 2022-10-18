@@ -1,5 +1,9 @@
+import 'package:Flutter_father/exercise/mini_project_bloc/mini_shopping_page_1.dart';
+import 'package:Flutter_father/exercise/todo_bloc/todo_page.dart';
+import 'package:Flutter_father/learn/learn_stream/EX_cart/EX_page2.dart';
 import 'package:Flutter_father/learn/learn_stream/bloc/issue_bloc.dart';
 import 'package:Flutter_father/learn/learn_stream/exr1/model_json/issue.dart';
+import 'package:Flutter_father/modun/navigator.dart';
 import 'package:flutter/material.dart';
 
 class IssuePage extends StatefulWidget {
@@ -10,11 +14,8 @@ class IssuePage extends StatefulWidget {
 }
 
 class _IssuePageState extends State<IssuePage> {
-  late IssueBloc bloc;
-
   @override
   void initState() {
-    bloc = IssueBloc();
     super.initState();
   }
 
@@ -22,27 +23,41 @@ class _IssuePageState extends State<IssuePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('News Feed'),
+        title: Text('TEXT'),
         actions: [
           IconButton(
               onPressed: () {
-                bloc.increment();
+                navigatorPush(context, EXPage2());
+              },
+              icon: const Icon(Icons.home)),
+          IconButton(
+              onPressed: () {
+                count.increment();
               },
               icon: const Icon(Icons.add)),
           IconButton(
               onPressed: () {
-                bloc.decrement();
+                count.decrement();
               },
               icon: const Icon(Icons.remove)),
         ],
       ),
-      body: buildList(),
+      body: Center(child: buildCount()),
+    );
+  }
+
+  Widget buildCount() {
+    return StreamBuilder<int>(
+      stream: count.streamCount,
+      builder: (context, snapshot) {
+        return Text('${count.count ?? 0}');
+      },
     );
   }
 
   Widget buildList() {
     return StreamBuilder<List<Issue>>(
-      stream: bloc.streamIssue,
+      stream: count.streamIssue,
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return Center(
@@ -53,12 +68,12 @@ class _IssuePageState extends State<IssuePage> {
           final issues = snapshot.data ?? [];
           return ListView.separated(
             separatorBuilder: (_, __) {
-              return Divider();
+              return const Divider();
             },
             itemCount: issues.length,
             itemBuilder: (context, index) {
               if (index == issues.length - 1) {
-                bloc.getIssues();
+                count.getIssues();
               }
               final issue = issues[index];
               return ListTile(
